@@ -1,0 +1,40 @@
+--Create a Marvel charcters database
+
+CREATE TABLE marvels(id integer primary key,name text, popularity integer, alignment text, gender text, height_m numeric, weight_kg numeric, hometown text, intelligence integer, strength integer, speed integer, durability integer, energy_Projection integer, fighting_Skills integer);
+
+INSERT INTO marvels VALUES
+(1,'Spider Man',1,'Good','Male', 1.78,75.75,'USA',4,4,3,3,1,4),
+(2,'Iron Man',20,'Neutral','Male',1.98,102.58,'USA',6,6,5,6,6,4),
+(3,'Hulk',18,'Neutral','Male',2.44,635.29,'USA',1,7,3,7,5,4),
+(4,'Wolverine',3,'Good','Male',1.6,88.46,'Canada',2,4,2,4,1,7),
+(5,'Thor',5,'Good','Male',1.98,290.3,'Asgard',2,7,7,6,6,4),
+(6,'Green Goblin',91,'Bad','Male',1.93,174.63,'USA',4,4,3,4,3,3),
+(7,'Magneto',11,'Neutral','Male',1.88,86.18,'Germany',6,3,6,4,6,4),
+(8,'Thanos',47,'Bad','Male',2.01,446.79,'Titan',6,7,7,6,6,4),
+(9,'Loki',32,'Bad','Male',1.93,238.14,'Jotunheim',5,5,7,6,6,3),
+(10,'Doctor Doom',19,'Bad','Male',2.01,188.24,'Latveria',6,4,5,6,6,4),
+(11,'Jean Grey',8,'Good','Female',1.68,52.16,'USA',3,2,7,7,7,4),
+(12,'Rogue',4,'Good','Female',1.73,54.43,'USA',7,7,7,7,7,7),
+(13,'Storm',2,'Good','Male',1.75,73,'Germany',2,2,3,2,5,4),
+(14,'Nightcrawler',6,'Good','Male',1.75,73,'Germany',3,2,7,2,1,3);
+
+--Query the data
+
+--Group by their overall skill and other skill areas
+Select name, gender, alignment, (intelligence + strength + speed + durability + energy_Projection + fighting_Skills) AS 'overall_skill', intelligence, strength, speed, durability, energy_Projection, fighting_Skills FROM marvels Group by -1 * overall_skill;
+
+--Group by average weight and height
+SELECT name, gender, alignment, weight_kg, CASE
+    WHEN weight_kg > weight_kg_avg THEN 'HIGHER'
+    When weight_kg < weight_kg_avg THEN 'Lower'
+    ELSE 'SAME'
+END AS 'compared_to_average_height'
+FROM (
+SELECT name, gender, alignment, weight_kg, (SELECT AVG(weight_kg) FROM marvels) AS weight_kg_avg,
+height_m,
+(SELECT AVG(height_m) FROM marvels) AS height_m_avg
+FROM marvels AS m);
+
+--Group by thier popularity
+SELECT name, gender, alignment, popularity, hometown FROM marvels GROUP BY -1 *
+popularity;
