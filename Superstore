@@ -1,0 +1,19 @@
+SELECT *
+FROM superstore
+ORDER BY price
+;
+
+SELECT SUM(price)
+FROM superstore
+;
+
+SELECT Min(price)
+FROM superstore
+WHERE category='Kitchen Supplies'
+;
+
+--How many Wireless Earbuds are in stock?
+SELECT(item_id), stock_quantity
+FROM superstore
+WHERE item_name='Wireless Earbuds'
+;
